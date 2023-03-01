@@ -134,3 +134,5 @@ dmypy.json
 # Experiment data
 *.png
 *.json
+
+.vs/

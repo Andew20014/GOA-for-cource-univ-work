@@ -64,15 +64,19 @@ def update_position(position, best_position, min_values, max_values, C, F, L, ta
 def grasshopper_optimization_algorithm(grasshoppers = 5, min_values = [-5,-5], max_values = [5,5], c_min = 0.00004, c_max = 1, iterations = 1000, F = 0.5, L = 1.5, target_function = target_function, verbose = True):
     count         = 0
     position      = initial_position(grasshoppers, min_values, max_values, target_function)
-    best_position = np.copy(position[np.argmin(position[:,-1]),:].reshape(1,-1))   
-    while (count <= iterations): 
-        if (verbose == True):
+    best_position = np.copy(position[np.argmin(position[:,-1]),:].reshape(1,-1))  
+    through_results = []
+    while count <= iterations:
+        #if count % (iterations / 10) == 0:
+        through_results.append(np.copy(position))
+        if verbose:
             print('Iteration = ', count,  ' f(x) = ', best_position[0, -1])
         C        = c_max - count*( (c_max - c_min)/iterations)
         position = update_position(position, best_position, min_values, max_values, C, F, L, target_function = target_function)
         if (np.amin(position[:,-1]) < best_position[0,-1]):
             best_position = np.copy(position[np.argmin(position[:,-1]),:].reshape(1,-1))  
         count    = count + 1
-    return best_position
+    through_results.append(best_position)
+    return through_results
 
 ############################################################################
